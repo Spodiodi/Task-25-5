@@ -95,10 +95,17 @@ def test_my_pet_table(test_pet_friends, web_browser):
                                                                                         'left"]/h2')))
     print(element.text)
     assert element
-'''
-    # имена питомцев
-    names = driver.find_elements(By.XPATH, '//h5[@class="card-title"]')
-    # количество питомцев
-    text = driver.find_element(By.XPATH, '//div[@class=".col-sm-4 left"]/text()[1]')
+
+    # количество ячеек с питомцами
+    cells_count = driver.find_elements(By.XPATH, '//tbody/tr')
+    # количество питомцев из заголовка
+    text = driver.find_element(By.XPATH, '//div[@class=".col-sm-4 left"]').text
     print(text)
-'''
+    text_list = text.split('\n')
+    my_pets_count = 0
+    for i in text_list:
+        if 'Питомцев' in i:
+            my_pets_count = int(i.split(': ')[1])
+
+    assert my_pets_count == len(cells_count)
+
